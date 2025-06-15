@@ -1,4 +1,5 @@
 from opentrons import types
+from liquidlib.liquids.glycerin import Glycerin
 
 metadata = {
     'protocolName': 'Liquid Class Verification',
@@ -18,25 +19,13 @@ def add_parameters(parameters):
                         description=" ",
                         default=False
                         )
+    parameters.add_
  
 def run(ctx):
 
     global wavelength_ref
 
-    global assay_labware  
-    global diluent_labware  
-    global reagent_labware 
-
-    global num_col_assay_plate
-    global vol_diluent
-    global vol_reagent
-
-
     wavelength_ref = ctx.params.wavelength_ref
-
-    assay_labware = ctx.params.assay_labware 
-    diluent_labware = ctx.params.diluent_labware 
-    reagent_labware = ctx.params.reagent_labware
 
     #################################
 
@@ -46,6 +35,8 @@ def run(ctx):
     ## volume of diluent and reagent to add 
     vol_diluent = 180
     vol_reagent = 20
+    liquid = Glycerin()
+    print (liquid.to_json())
 
     # deck layout
     reader = ctx.load_module("absorbanceReaderV1", "D3")
@@ -60,7 +51,7 @@ def run(ctx):
     tips_50 = ctx.load_labware('opentrons_flex_96_tiprack_50ul', 'D2', 'P50 TIPS')
 
     # pipettes
-    left_pipette = protocol.load_instrument(
+    left_pipette = ctx.load_instrument(
         "flex_8channel_1000", mount="left", tip_racks=[tiprack]
     )
 
